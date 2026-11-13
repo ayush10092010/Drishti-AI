@@ -1,1 +1,494 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>DRISHTI AI | Accessible Learning</title> 
+<style> 
+:root{ 
+--bg:#f5eee3; 
+--sidebar:#49352b; 
+--card:#fffaf2; 
+--brown:#795642; 
+--dark:#38271f; 
+--gold:#c49a62; 
+--text:#382c25; 
+--muted:#88786a; 
+--border:#e5d7c5; 
+} 
+*{box-sizing:border-box} 
+body{ 
+margin:0; 
+background:var(--bg); 
+color:var(--text); 
+font-family:Arial,sans-serif; 
+} 
+button,input,textarea,select{font:inherit} 
+button{cursor:pointer} 
+.sidebar{ 
+width:245px; 
+height:100vh; 
+position:fixed; 
+left:0; 
+top:0; 
+background:var(--sidebar); 
+padding:25px 16px; 
+color:white; 
+z-index:10; 
+} 
+.brand{ 
+display:flex; 
+align-items:center; 
+gap:12px; 
+margin-bottom:35px; 
+} 
+.logo-img{ 
+width:45px; 
+height:45px; 
+border-radius:12px; 
+object-fit:contain; 
+background:white; 
+} 
+.brand b{letter-spacing:2px} 
+.brand small{ 
+display:block; 
+color:#dfc9b3; 
+font-size:9px; 
+margin-top:4px; 
+} 
+.nav button{ 
+display:block; 
+width:100%; 
+text-align:left; 
+border:0; 
+background:none; 
+color:#e2d3c5; 
+padding:14px; 
+border-radius:10px; 
+margin:5px 0; 
+} 
+.nav button:hover, 
+.nav button.active{ 
+background:#795642; 
+color:white; 
+} 
+.main{ 
+margin-left:245px; 
+padding:30px; 
+max-width:1500px; 
+} 
+.topbar{ 
+display:flex; 
+justify-content:space-between; 
+align-items:center; 
+margin-bottom:30px; 
+} 
+.eyebrow{ 
+color:#9b714c; 
+letter-spacing:2px; 
+font-size:11px; 
+font-weight:bold; 
+} 
+.page{display:none} 
+.page.active{display:block} 
+h1{ 
+font-size:clamp(32px,4vw,48px); 
+margin:12px 0; 
+color:var(--dark); 
+} 
+h2{font-size:25px;color:var(--dark)} 
+p{ 
+color:var(--muted); 
+line-height:1.7; 
+} 
+.hero{ 
+padding:45px; 
+border:1px solid #d8c0a5; 
+border-radius:25px; 
+background:linear-gradient(120deg,#e9d9c5,#fff8ed); 
+} 
+.hero h1 span{color:#956b47} 
+.tag{ 
+display:inline-block; 
+color:#795642; 
+border:1px solid #c7a987; 
+padding:8px 13px; 
+border-radius:25px; 
+font-size:11px; 
+} 
+.btn{ 
+border:0; 
+border-radius:10px; 
+padding:13px 19px; 
+background:linear-gradient(100deg,#947052,#b48c64); 
+color:white; 
+font-weight:bold; 
+margin:6px 4px 6px 0; 
+} 
+.btn.secondary{ 
+background:#e7d9c8; 
+color:#49352b; 
+border:1px solid #d3bea7; 
+} 
+.btn.gold{ 
+background:linear-gradient(100deg,#c49a62,#dfbd89); 
+color:#38271f; 
+} 
+.grid{ 
+display:grid; 
+grid-template-columns:repeat(3,1fr); 
+gap:17px; 
+margin-top:22px; 
+} 
+.card,.panel{ 
+background:var(--card); 
+border:1px solid var(--border); 
+border-radius:17px; 
+padding:22px; 
+} 
+.card{ 
+cursor:pointer; 
+transition:.2s; 
+} 
+.card:hover{ 
+transform:translateY(-4px); 
+border-color:#b48c64; 
+} 
+.card .icon{ 
+font-size:27px; 
+margin-bottom:15px; 
+} 
+.card h3{margin:5px 0;color:var(--dark)} 
+.panel{margin-top:20px} 
+label{ 
+display:block; 
+margin:14px 0 7px; 
+color:#624b39; 
+} 
+input,textarea,select{ 
+width:100%; 
+padding:13px; 
+border-radius:10px; 
+border:1px solid var(--border); 
+background:#fffdf9; 
+color:var(--dark); 
+} 
+textarea{min-height:100px} 
+.result{ 
+background:#f7efe5; 
+border:1px solid var(--border); 
+padding:17px; 
+border-radius:12px; 
+margin-top:15px; 
+line-height:1.8; 
+white-space:pre-wrap; 
+} 
+.preview{ 
+max-width:100%; 
+max-height:300px; 
+display:block; 
+margin-top:15px; 
+border-radius:12px; 
+} 
+.chatbox{ 
+height:350px; 
+overflow:auto; 
+background:#f8f1e8; 
+padding:15px; 
+border-radius:12px; 
+border:1px solid var(--border); 
+} 
+.bubble{ 
+padding:12px 15px; 
+border-radius:12px; 
+margin:9px 0; 
+max-width:85%; 
+line-height:1.6; 
+white-space:pre-wrap; 
+} 
+.bot{background:#e9d9c8} 
+.user{ 
+background:#795642; 
+color:white; 
+margin-left:auto; 
+} 
+.chatrow{ 
+display:flex; 
+gap:8px; 
+margin-top:12px; 
+} 
+.chatrow input{flex:1} 
+.chatrow button{white-space:nowrap} 
+.choice{ 
+display:block; 
+width:100%; 
+text-align:left; 
+padding:14px; 
+margin:9px 0; 
+border-radius:10px; 
+background:#f8f1e8; 
+color:#49352b; 
+border:1px solid var(--border); 
+} 
+.choice:hover{border-color:#a17b56} 
+.choice.correct{background:#dcecdf} 
+.choice.wrong{background:#f4dada} 
+.note{ 
+margin-top:25px; 
+padding:17px; 
+border-left:3px solid var(--gold); 
+background:#eadbc9; 
+color:#705e4d; 
+font-size:12px; 
+line-height:1.7; 
+} 
+.mic-status{ 
+color:#956b47; 
+font-size:13px; 
+margin-top:8px; 
+} 
+@media(max-width:850px){ 
+.sidebar{ 
+ width:70px; 
+ padding:15px 8px; 
+} 
+.brand{justify-content:center} 
+.brandtext,.nav button span{display:none} 
+.nav button{ 
+ text-align:center; 
+ font-size:20px; 
+} 
+.main{ 
+ margin-left:70px; 
+ padding:20px 14px; 
+} 
+.grid{grid-template-columns:repeat(2,1fr)} 
+} 
+@media(max-width:550px){ 
+.grid{grid-template-columns:1fr} 
+.hero{padding:25px} 
+.hero h1{font-size:32px} 
+.chatrow{flex-wrap:wrap} 
+.chatrow input{width:100%;flex-basis:100%} 
+} 
+body.high-contrast{ 
+--bg:#ffffff; 
+--card:#ffffff; 
+--text:#000000; 
+--muted:#333333; 
+--border:#333333; 
+} 
+body.high-contrast p{color:#222} 
+</style> 
+</head> 
+<body> 
+<aside class="sidebar"> 
+<div class="brand"> 
+<div class="brandtext"> 
+<b>DRISHTI AI</b> 
+<small>VISION FOR EDUCATION</small> 
+</div> </div> 
+<nav class="nav"> 
+<button class="active" onclick="showPage('home',this)">⌂ <span>Home</span></button>
+<button onclick="showPage('scan',this)">📷 <span>Scan & Explain</span></button>
+<button onclick="showPage('ask',this)">✧ <span>Ask AI</span></button>
+<button onclick="showPage('quiz',this)">🧠 <span>Free Quiz</span></button>
+<button onclick="showPage('tactile',this)">👐 <span>Tactile Layout</span></button>
+<button onclick="showPage('help',this)">💙 <span>Help & Support</span></button>
+<button onclick="showPage('account',this)">⚙️ <span>Account</span></button>
+</nav> 
+</aside> 
+<main class="main"> 
+<header class="topbar"> 
+<div class="eyebrow">ACCESSIBLE LEARNING COMPANION</div> 
+<div>● <span style="color:#947052">Prototype Mode</span></div> 
+</header> 
+
+<!-- HOME --> 
+<section class="page active" id="home"> 
+<div class="hero"> 
+<span class="tag">AI • ACCESSIBILITY • EDUCATION</span>
+<h1>When Eyes Cannot See,<br><span>Knowledge</span> Should Still Be Within Reach.</h1> 
+<p>Welcome Champ! Welcome to DRISHTI AI. Your learning journey starts here.</p> 
+<button class="btn" onclick="showPage('scan')">📷 Scan a Diagram</button>
+<button class="btn secondary" onclick="showPage('ask')">✧ Ask DRISHTI AI</button>
+<button class="btn gold" onclick="speak('Welcome Champ! Welcome to DRISHTI AI.')">🔊 Hear Welcome</button>
+</div> 
+<h2>Your Learning Tools</h2> 
+<div class="grid"> 
+<div class="card" onclick="showPage('scan')"> 
+<div class="icon">📷</div> 
+<h3>Scan & Explain</h3> 
+<p>Upload textbook diagrams and explore explanations.</p> 
+</div> 
+<div class="card" onclick="showPage('ask')"> 
+<div class="icon">💬</div> 
+<h3>Ask AI</h3> 
+<p>Ask questions using text or voice.</p> 
+</div> 
+<div class="card" onclick="showPage('quiz')"> 
+<div class="icon">🧠</div> 
+<h3>Free Quiz</h3> 
+<p>Test your science knowledge.</p> 
+</div> 
+<div class="card" onclick="showPage('tactile')"> 
+<div class="icon">👐</div> 
+<h3>Tactile Layout</h3> 
+<p>Create accessible diagram design plans.</p> 
+</div> 
+<div class="card" onclick="showPage('help')"> 
+<div class="icon">💙</div> 
+<h3>Support Centre</h3> 
+<p>Accessibility and learning support.</p> 
+</div> 
+<div class="card" onclick="showPage('account')"> 
+<div class="icon">⚙️</div> 
+<h3>Personalise</h3> 
+<p>Choose your language and preferences.</p> 
+</div> 
+</div> 
+<div class="note">Made by Team DRISHTI AI. This is an educational prototype with demonstration answers.</div> 
+</section> 
+
+<!-- SCAN --> 
+<section class="page" id="scan"> 
+<div class="eyebrow">VISUAL LEARNING</div> 
+<h1>Scan & Explain</h1> 
+<p>Upload a textbook diagram to preview it.</p> 
+<div class="panel"> 
+<label>Choose a diagram image</label>
+<input type="file" id="imageInput" accept="image/*"> 
+<img id="preview" class="preview" hidden alt="Uploaded diagram"> 
+<button class="btn" onclick="explainImage()">Explain Diagram</button>
+<button class="btn secondary" onclick="clearImage()">Clear</button> 
+<div class="result" id="scanResult">Your explanation will appear here.</div> 
+</div> 
+</section> 
+
+<!-- ASK AI --> 
+<section class="page" id="ask"> 
+<div class="eyebrow">YOUR LEARNING ASSISTANT</div> 
+<h1>Ask DRISHTI AI</h1> 
+<p>Ask science questions in English, Hindi or Hinglish.</p> 
+<div class="panel"> 
+<label>Response Language</label>
+<select id="chatLanguage" onchange="setRecognitionLanguage()"> 
+<option value="English">English</option> 
+<option value="Hindi">Hindi</option> 
+<option value="Hinglish">Hinglish</option> 
+</select> 
+<div class="chatbox" id="chatbox" aria-live="polite"> 
+<div class="bubble bot">Welcome Champ! I am DRISHTI AI. You can ask me about Solar System, Heart, Ecosystem, Photosynthesis, Gravity, Atom or Force.</div> 
+</div> 
+<div class="chatrow"> 
+<input id="question" placeholder="Type your question..."> 
+<button class="btn secondary" id="micBtn" onclick="voiceInput()">🎙 Mic</button>
+<button class="btn" onclick="sendQuestion()">Send</button> 
+</div> 
+<div class="mic-status" id="micStatus">Microphone ready.</div> 
+</div> 
+</section> 
+
+<!-- QUIZ --> 
+<section class="page" id="quiz"> 
+<div class="eyebrow">PRACTISE & LEARN</div> 
+<h1>Free Science Quiz</h1> 
+<div class="panel"> 
+<div id="qNumber">Question 1 of 5</div> 
+<h2 id="quizQuestion"></h2> 
+<div id="choices"></div> 
+<div class="result" id="feedback">Choose your answer.</div> 
+<h3 id="score">Score: 0</h3> 
+<button class="btn" id="nextButton" onclick="nextQuestion()" disabled>Next Question →</button>
+<button class="btn secondary" onclick="restartQuiz()">Restart</button> 
+</div> 
+</section> 
+
+<!-- TACTILE --> 
+<section class="page" id="tactile"> 
+<div class="eyebrow">INCLUSIVE DIAGRAM DESIGN</div> 
+<h1>Tactile Layout Generator</h1> 
+<div class="panel"> 
+<label>Diagram Topic</label>
+<input id="diagramName" placeholder="Example: Human Heart, Plant Cell"> 
+<label>Important Parts / Labels</label>
+<textarea id="diagramNotes" placeholder="Enter important parts..."></textarea> 
+<button class="btn gold" onclick="makeTactile()">Generate Design Plan</button> 
+<div class="result" id="tactileResult">Your design plan will appear here.</div> 
+</div> 
+</section> 
+
+<!-- HELP --> 
+<section class="page" id="help"> 
+<div class="eyebrow">WE ARE HERE TO HELP</div> 
+<h1>Help & Support</h1> 
+<div class="grid"> 
+<div class="card"><div class="icon">💙</div><h3>Learning Support</h3><p>Use audio reading and text preferences.</p></div> 
+</div> 
+</section> 
+
+<!-- ACCOUNT --> 
+<section class="page" id="account"> 
+<div class="eyebrow">MAKE IT YOURS</div> 
+<h1>Account & Accessibility</h1> 
+<div class="panel"> 
+<label>Your Name</label>
+<input id="userName" placeholder="Enter your name"> 
+<label>Preferred Language</label>
+<select id="language"><option>English</option><option>Hindi</option><option>Hinglish</option></select> 
+<button class="btn" onclick="saveSettings()">Save Preferences</button> 
+<div class="result" id="settingsResult">Your preferences are stored in this browser.</div> 
+</div> 
+</section> 
+</main> 
+
+<script> 
+function showPage(id,btn){ 
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); 
+document.getElementById(id).classList.add('active'); 
+document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active')); 
+if(btn)btn.classList.add('active'); 
+window.scrollTo(0,0); 
+} 
+function speak(text){ 
+if(!('speechSynthesis' in window))return; 
+speechSynthesis.cancel(); 
+let lang=document.getElementById('chatLanguage')?.value || document.getElementById('language').value; 
+let utterance=new SpeechSynthesisUtterance(text); 
+utterance.lang=lang==='Hindi'?'hi-IN':'en-IN'; 
+speechSynthesis.speak(utterance); 
+} 
+const answers={ 
+"solar system":{English:`Solar System consists of the Sun and planets.`, Hindi:`सौर मंडल सूर्य और ग्रहों का समूह है।`, Hinglish:`Solar System Sun aur planets ka group hai.`}, 
+"heart":{English:`Human heart pumps blood.`, Hindi:`मानव हृदय रक्त पंप करता है।`, Hinglish:`Human heart blood pump karta hai.`}, 
+"ecosystem":{English:`Ecosystem is a community of living organisms.`, Hindi:`पारिस्थितिकी तंत्र जीवों का समुदाय है।`, Hinglish:`Ecosystem living organisms ka community hai.`}, 
+"photosynthesis":{English:`Plants make food using sunlight.`, Hindi:`पौधे सूर्य के प्रकाश से भोजन बनाते हैं।`, Hinglish:`Plants sunlight se food banate hain.`}, 
+"gravity":{English:`Gravity is the force of attraction.`, Hindi:`गुरुत्वाकर्षण आकर्षण बल है।`, Hinglish:`Gravity attractive force hai.`}, 
+"atom":{English:`Atom is the smallest unit of matter.`, Hindi:`परमाणु पदार्थ की सबसे छोटी इकाई है।`, Hinglish:`Atom smallest unit hai.`}, 
+"force":{English:`Force is a push or pull.`, Hindi:`बल धक्का या खिंचाव है।`, Hinglish:`Force push ya pull hai.`} 
+}; 
+function addBubble(text,type){ 
+let b=document.createElement('div'); 
+b.className='bubble '+type; 
+b.textContent=text; 
+let box=document.getElementById('chatbox'); 
+box.appendChild(b); 
+box.scrollTop=box.scrollHeight; 
+} 
+function sendQuestion(){ 
+let input=document.getElementById('question'); 
+let original=input.value.trim(); 
+if(!original)return; 
+addBubble(original,'user'); 
+input.value=''; 
+let q=original.toLowerCase(); 
+let lang=document.getElementById('chatLanguage').value; 
+let match=Object.keys(answers).find(k=>q.includes(k)); 
+let response=match?answers[match][lang]:"Sorry! Try asking about Solar System, Heart, Ecosystem, Photosynthesis, Gravity, Atom or Force."; 
+setTimeout(()=>addBubble(response,'bot'),300); 
+} 
+document.getElementById('question').addEventListener('keydown',e=>{if(e.key==='Enter')sendQuestion();}); 
+</script> 
+</body> 
+</html>
 
