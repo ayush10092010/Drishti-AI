@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from google import genai
 from google.genai import types
@@ -19,6 +19,11 @@ SYSTEM_PROMPT = (
     "3. Functions and details of each part, "
     "4. Support for cross-questioning in English, Hindi, or Hinglish."
 )
+
+# 1. ADD THIS HOME ROUTE SO RENDER FINDS index.html
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/api/health', methods=['GET'])
 def health():
