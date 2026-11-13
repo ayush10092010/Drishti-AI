@@ -31,7 +31,7 @@ def chat():
         question = data.get('question', '')
         language = data.get('language', 'English')
         prompt = f"User Language: {language}.\nQuestion: {question}\nAnswer clearly and support cross-questioning."
-        
+
         response = client.models.generate_content(
             model='gemini-2.5-flash',
             contents=prompt,
@@ -50,8 +50,8 @@ def scan_image():
         image_path = "temp.png"
         image_file.save(image_path)
         img = Image.open(image_path)
-        
-        prompt = "Analyze this diagram for a blind student. Provide: 1. Summary, 2. Precise spatial placement of every part (top, bottom, left, right, center), 3. Functions of each part."
+
+        prompt = "Analyze this diagram for a blind student. Provide: 1. Summary, 2. Precise spatial placement of every response = client.models.generate_content("
         response = client.models.generate_content(
             model='gemini-2.5-flash',
             contents=[img, prompt],
@@ -65,8 +65,9 @@ def scan_image():
 
 @app.route('/')
 def home():
-    return render_template('Ai-1.html')
-    
+    return render_template('index.html')
+
+if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
     
