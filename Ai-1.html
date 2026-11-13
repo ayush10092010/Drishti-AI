@@ -1,0 +1,1103 @@
+<!DOCTYPE html> <html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>DRISHTI AI | Accessible Learning</title> <style> 
+:root{ 
+--bg:#f5eee3; 
+--sidebar:#49352b; 
+--card:#fffaf2; 
+--brown:#795642; 
+--dark:#38271f; 
+--gold:#c49a62; 
+--text:#382c25; 
+--muted:#88786a; 
+--border:#e5d7c5; 
+} 
+*{box-sizing:border-box} 
+body{ 
+margin:0; 
+background:var(--bg); 
+color:var(--text); 
+font-family:Arial,sans-serif; 
+} 
+button,input,textarea,select{font:inherit} 
+button{cursor:pointer} 
+.sidebar{ 
+width:245px; 
+height:100vh; 
+position:fixed; 
+left:0; 
+top:0; 
+background:var(--sidebar); 
+padding:25px 16px; 
+color:white; 
+z-index:10; 
+} 
+.brand{ 
+display:flex; 
+align-items:center; 
+gap:12px; 
+margin-bottom:35px; 
+} 
+.logo-img{ 
+width:45px; 
+height:45px; 
+border-radius:12px; 
+object-fit:contain; 
+background:white; 
+} 
+.brand b{letter-spacing:2px} 
+.brand small{ 
+display:block; 
+color:#dfc9b3; 
+font-size:9px; 
+margin-top:4px; 
+} 
+.nav button{ 
+display:block; 
+width:100%; 
+text-align:left; 
+border:0; 
+background:none; 
+color:#e2d3c5; 
+padding:14px; 
+border-radius:10px; 
+margin:5px 0; 
+} 
+.nav button:hover, 
+.nav button.active{ 
+background:#795642; 
+color:white; 
+} 
+.main{ 
+margin-left:245px; 
+padding:30px; 
+max-width:1500px; 
+} 
+.topbar{ 
+display:flex; 
+justify-content:space-between; 
+align-items:center; 
+margin-bottom:30px; 
+} 
+.eyebrow{ 
+color:#9b714c; 
+letter-spacing:2px; 
+font-size:11px; 
+font-weight:bold; 
+} 
+.page{display:none} 
+.page.active{display:block} 
+h1{ 
+font-size:clamp(32px,4vw,48px); 
+margin:12px 0; 
+color:var(--dark); 
+} 
+h2{font-size:25px;color:var(--dark)} 
+p{ 
+color:var(--muted); 
+line-height:1.7; 
+} 
+.hero{ 
+padding:45px; 
+border:1px solid #d8c0a5; 
+border-radius:25px; 
+background:linear-gradient(120deg,#e9d9c5,#fff8ed); 
+} 
+.hero h1 span{color:#956b47} 
+.tag{ 
+display:inline-block; 
+color:#795642; 
+border:1px solid #c7a987; 
+padding:8px 13px; 
+border-radius:25px; 
+font-size:11px; 
+} 
+.btn{ 
+border:0; 
+border-radius:10px; 
+padding:13px 19px; 
+background:linear-gradient(100deg,#947052,#b48c64); 
+color:white; 
+font-weight:bold; 
+margin:6px 4px 6px 0; 
+} 
+.btn.secondary{ 
+background:#e7d9c8; 
+color:#49352b; 
+border:1px solid #d3bea7; 
+} 
+.btn.gold{ 
+background:linear-gradient(100deg,#c49a62,#dfbd89); 
+color:#38271f; 
+} 
+.grid{ 
+display:grid; 
+grid-template-columns:repeat(3,1fr); 
+gap:17px; 
+margin-top:22px; 
+} 
+.card,.panel{ 
+background:var(--card); 
+border:1px solid var(--border); 
+border-radius:17px; 
+padding:22px; 
+} 
+.card{ 
+cursor:pointer; 
+transition:.2s; 
+} 
+.card:hover{ 
+transform:translateY(-4px); 
+border-color:#b48c64; 
+} 
+.card .icon{ 
+font-size:27px; 
+margin-bottom:15px; 
+} 
+.card h3{margin:5px 0;color:var(--dark)} 
+.panel{margin-top:20px} 
+label{ 
+display:block; 
+margin:14px 0 7px; 
+color:#624b39; 
+} 
+input,textarea,select{ 
+width:100%; 
+padding:13px; 
+border-radius:10px; 
+border:1px solid var(--border); 
+background:#fffdf9; 
+color:var(--dark); 
+} 
+textarea{min-height:100px} 
+.result{ 
+background:#f7efe5; 
+border:1px solid var(--border); 
+padding:17px; 
+border-radius:12px; 
+margin-top:15px; 
+line-height:1.8; 
+white-space:pre-wrap; 
+} 
+.preview{ 
+max-width:100%; 
+max-height:300px; 
+display:block; 
+margin-top:15px; 
+border-radius:12px; 
+} 
+.chatbox{ 
+height:350px; 
+overflow:auto; 
+background:#f8f1e8; 
+padding:15px; 
+border-radius:12px; 
+border:1px solid var(--border); 
+} 
+.bubble{ 
+padding:12px 15px; 
+border-radius:12px; 
+margin:9px 0; 
+max-width:85%; 
+line-height:1.6; 
+white-space:pre-wrap; 
+} 
+.bot{background:#e9d9c8} 
+.user{ 
+background:#795642; 
+color:white; 
+margin-left:auto; 
+} 
+.chatrow{ 
+display:flex; 
+gap:8px; 
+margin-top:12px; 
+} 
+.chatrow input{flex:1} 
+.chatrow button{white-space:nowrap} 
+.choice{ 
+display:block; 
+width:100%; 
+text-align:left; 
+padding:14px; 
+margin:9px 0; 
+border-radius:10px; 
+background:#f8f1e8; 
+color:#49352b; 
+border:1px solid var(--border); 
+} 
+.choice:hover{border-color:#a17b56} 
+.choice.correct{background:#dcecdf} 
+.choice.wrong{background:#f4dada} 
+.note{ 
+margin-top:25px; 
+padding:17px; 
+border-left:3px solid var(--gold); 
+background:#eadbc9; 
+color:#705e4d; 
+font-size:12px; 
+line-height:1.7; 
+} 
+.mic-status{ 
+color:#956b47; 
+font-size:13px; 
+margin-top:8px; 
+} 
+@media(max-width:850px){ 
+.sidebar{ 
+ width:70px; 
+ padding:15px 8px; 
+} 
+.brand{justify-content:center} 
+.brandtext,.nav button span{display:none} 
+.nav button{ 
+ text-align:center; 
+ font-size:20px; 
+} 
+.main{ 
+ margin-left:70px; 
+ padding:20px 14px; 
+} 
+.grid{grid-template-columns:repeat(2,1fr)} 
+} 
+@media(max-width:550px){ 
+.grid{grid-template-columns:1fr} 
+.hero{padding:25px} 
+.hero h1{font-size:32px} 
+.chatrow{flex-wrap:wrap} 
+.chatrow input{width:100%;flex-basis:100%} 
+} 
+body.high-contrast{ 
+--bg:#ffffff; 
+--card:#ffffff; 
+--text:#000000; 
+--muted:#333333; 
+--border:#333333; 
+} 
+body.high-contrast p{color:#222} 
+</style> </head> <body> <aside class="sidebar"> <div class="brand"> <img src="50105.jpg" 
+alt="DRISHTI AI Logo" 
+class="logo-img">
+
+ <div class="brandtext"> 
+ <b>DRISHTI AI</b> 
+ <small>VISION FOR EDUCATION</small> 
+ </div> </div> <nav class="nav"> <button class="active" onclick="showPage('home',this)">⌂ <span>Home</span></button>
+
+<button onclick="showPage('scan',this)">📷 <span>Scan & Explain</span></button>
+
+<button onclick="showPage('ask',this)">✧ <span>Ask AI</span></button>
+
+<button onclick="showPage('quiz',this)">🧠 <span>Free Quiz</span></button>
+
+<button onclick="showPage('tactile',this)">👐 <span>Tactile Layout</span></button>
+
+<button onclick="showPage('help',this)">💙 <span>Help & Support</span></button>
+
+<button onclick="showPage('account',this)">⚙️ <span>Account</span></button>
+
+</nav> </aside> <main class="main"> <header class="topbar"> <div class="eyebrow">ACCESSIBLE LEARNING COMPANION</div> <div>● <span style="color:#947052">Prototype Mode</span></div> </header> <!-- HOME --> <section class="page active" id="home"> <div class="hero"> <span class="tag">AI • ACCESSIBILITY • EDUCATION</span>
+
+ <h1> 
+ When Eyes Cannot See,<br> 
+ <span>Knowledge</span> Should Still Be Within Reach. 
+ </h1> <p>Welcome Champ! Welcome to DRISHTI AI. Your learning journey starts here.</p> <button class="btn" onclick="showPage('scan')">📷 Scan a Diagram</button>
+
+<button class="btn secondary" onclick="showPage('ask')">✧ Ask DRISHTI AI</button>
+
+<button class="btn gold" onclick="speak('Welcome Champ! Welcome to DRISHTI AI.')">🔊 Hear Welcome</button>
+
+</div> <h2>Your Learning Tools</h2> <div class="grid"> <div class="card" onclick="showPage('scan')"> 
+ <div class="icon">📷</div> 
+ <h3>Scan & Explain</h3> 
+ <p>Upload textbook diagrams and explore explanations.</p> 
+ </div> <div class="card" onclick="showPage('ask')"> 
+ <div class="icon">💬</div> 
+ <h3>Ask AI</h3> 
+ <p>Ask questions using text or voice.</p> 
+ </div> <div class="card" onclick="showPage('quiz')"> 
+ <div class="icon">🧠</div> 
+ <h3>Free Quiz</h3> 
+ <p>Test your science knowledge.</p> 
+ </div> <div class="card" onclick="showPage('tactile')"> 
+ <div class="icon">👐</div> 
+ <h3>Tactile Layout</h3> 
+ <p>Create accessible diagram design plans.</p> 
+ </div> <div class="card" onclick="showPage('help')"> 
+ <div class="icon">💙</div> 
+ <h3>Support Centre</h3> 
+ <p>Accessibility and learning support.</p> 
+ </div> <div class="card" onclick="showPage('account')"> 
+ <div class="icon">⚙️</div> 
+ <h3>Personalise</h3> 
+ <p>Choose your language and preferences.</p> 
+ </div> </div> <div class="note"> 
+ Made by Team DRISHTI AI. This is an educational prototype with demonstration answers. Live AI image recognition and unrestricted AI conversations require a secure AI backend. 
+</div> </section> <!-- SCAN --> <section class="page" id="scan"> <div class="eyebrow">VISUAL LEARNING</div> <h1>Scan & Explain</h1> <p>Upload a textbook diagram to preview it.</p> <div class="panel"> <label>Choose a diagram image</label>
+
+ <input type="file" id="imageInput" accept="image/*"> <img id="preview" class="preview" hidden alt="Uploaded diagram"> <button class="btn" onclick="explainImage()">Explain Diagram</button>
+
+<button class="btn secondary" onclick="clearImage()">Clear</button>
+
+ <div class="result" id="scanResult">Your explanation will appear here.</div> <button class="btn secondary" onclick="speak(document.getElementById('scanResult').innerText)">🔊 Read Aloud</button>
+
+</div> </section> <!-- ASK AI --> <section class="page" id="ask"> <div class="eyebrow">YOUR LEARNING ASSISTANT</div> <h1>Ask DRISHTI AI</h1> <p>Ask science questions in English, Hindi or Hinglish.</p> <div class="panel"> <label>Response Language</label>
+
+ <select id="chatLanguage" onchange="setRecognitionLanguage()"> 
+ <option value="English">English</option> 
+ <option value="Hindi">Hindi</option> 
+ <option value="Hinglish">Hinglish</option> 
+ </select> <div class="chatbox" id="chatbox" aria-live="polite"> <div class="bubble bot"> 
+ Welcome Champ! I am DRISHTI AI. You can ask me about: 
+
+1. Solar System 
+2. Human Heart 
+3. Ecosystem 
+4. Photosynthesis 
+5. Gravity 
+6. Atom 
+7. Force 
+
+You can also use the microphone!
+
+ </div> </div> <div class="chatrow"> <input id="question" placeholder="Type your question..."> <button class="btn secondary" id="micBtn" onclick="voiceInput()">🎙 Mic</button>
+
+<button class="btn" onclick="sendQuestion()">Send</button>
+
+ </div> <div class="mic-status" id="micStatus" aria-live="polite"> 
+ Microphone ready. 
+ </div> </div> </section> <!-- QUIZ --> <section class="page" id="quiz"> <div class="eyebrow">PRACTISE & LEARN</div> <h1>Free Science Quiz</h1> <div class="panel"> <div id="qNumber">Question 1 of 5</div> <h2 id="quizQuestion"></h2> <div id="choices"></div> <div class="result" id="feedback">Choose your answer.</div> <h3 id="score">Score: 0</h3> <button class="btn" id="nextButton" onclick="nextQuestion()" disabled>Next Question →</button>
+
+<button class="btn secondary" onclick="restartQuiz()">Restart</button>
+
+</div> </section> <!-- TACTILE --> <section class="page" id="tactile"> <div class="eyebrow">INCLUSIVE DIAGRAM DESIGN</div> <h1>Tactile Layout Generator</h1> <p>Create simplified design plans for tactile learning materials.</p> <div class="panel"> <label>Diagram Topic</label>
+
+ <input id="diagramName" placeholder="Example: Human Heart, Plant Cell"> <label>Important Parts / Labels</label>
+
+ <textarea id="diagramNotes" placeholder="Enter the important parts..."></textarea> <button class="btn gold" onclick="makeTactile()">Generate Design Plan</button>
+
+ <div class="result" id="tactileResult">Your design plan will appear here.</div> <button class="btn secondary" onclick="window.print()">Print / Save PDF</button>
+
+</div> <div class="note"> 
+ This generates a design concept, not a physical raised-line diagram. 
+</div> </section> <!-- HELP --> <section class="page" id="help"> <div class="eyebrow">WE ARE HERE TO HELP</div> <h1>Help & Support</h1> <div class="grid"> <div class="card"> 
+ <div class="icon">💙</div> 
+ <h3>Learning Support</h3> 
+ <p>Use audio reading, larger text and your preferred language.</p> 
+ </div> <div class="card"> 
+ <div class="icon">🌱</div> 
+ <h3>Emotional Wellbeing</h3> 
+ <p>Take breaks and speak with a trusted teacher or family member if studies feel stressful.</p> 
+ </div> <div class="card"> 
+ <div class="icon">✉️</div> 
+ <h3>Project Support</h3> 
+ <p>Share your suggestions with the DRISHTI AI project team.</p> 
+ </div> </div> </section> <!-- ACCOUNT --> <section class="page" id="account"> <div class="eyebrow">MAKE IT YOURS</div> <h1>Account & Accessibility</h1> <div class="panel"> <label>Your Name</label>
+
+ <input id="userName" placeholder="Enter your name"> <label>Preferred Language</label>
+
+ <select id="language"> 
+ <option>English</option> 
+ <option>Hindi</option> 
+ <option>Hinglish</option> 
+ </select> <label>Text Size</label>
+
+ <select id="textSize"> 
+ <option value="16">Standard</option> 
+ <option value="18">Large</option> 
+ <option value="21">Extra Large</option> 
+ </select> <label> 
+ <input type="checkbox" id="audioPref" checked style="width:auto"> 
+ Enable Audio Support 
+ </label> <label> 
+ <input type="checkbox" id="contrast" style="width:auto"> 
+ High Contrast Mode 
+ </label> <button class="btn" onclick="saveSettings()">Save Preferences</button>
+
+<button class="btn secondary" onclick="speak('Audio support is working. Welcome to DRISHTI AI.')">Test Audio 🔊</button>
+
+ <div class="result" id="settingsResult">Your preferences are stored in this browser.</div> </div> </section> </main> <script> 
+// NAVIGATION 
+function showPage(id,btn){ 
+document.querySelectorAll('.page').forEach(p=>{ 
+ p.classList.remove('active'); 
+}); 
+document.getElementById(id).classList.add('active'); 
+document.querySelectorAll('.nav button').forEach(b=>{ 
+ b.classList.remove('active'); 
+}); 
+if(btn)btn.classList.add('active'); 
+window.scrollTo(0,0); 
+} 
+// AUDIO SYSTEM 
+function speak(text){ 
+if(!('speechSynthesis' in window)){ 
+ alert('Audio is not supported in this browser.'); 
+ return; 
+} 
+speechSynthesis.cancel(); 
+let lang=document.getElementById('chatLanguage')?.value || 
+ document.getElementById('language').value; 
+let utterance=new SpeechSynthesisUtterance(text); 
+utterance.lang=lang==='Hindi'?'hi-IN':'en-IN'; 
+utterance.rate=0.9; 
+utterance.pitch=1; 
+speechSynthesis.speak(utterance); 
+} 
+// SCAN IMAGE 
+document.getElementById('imageInput').addEventListener('change',function(){ 
+let file=this.files[0]; 
+if(!file)return; 
+if(!file.type.startsWith('image/')){ 
+ alert('Choose an image file.'); 
+ return; 
+} 
+let preview=document.getElementById('preview'); 
+preview.src=URL.createObjectURL(file); 
+preview.hidden=false; 
+}); 
+function explainImage(){ 
+let file=document.getElementById('imageInput').files[0]; 
+if(!file){ 
+ alert('Please upload a diagram first.'); 
+ return; 
+} 
+document.getElementById('scanResult').textContent= 
+`Diagram selected: ${file.name} 
+GUIDED EXPLANATION 
+1. Identify the title and main object. 
+2. Observe the arrows, symbols and labels. 
+3. Read each label and connect it to the relevant part. 
+4. Understand how the components work together. 
+5. Summarise the diagram in simple language. 
+Note: Automatic image recognition requires a live AI backend.`; 
+} 
+function clearImage(){ 
+document.getElementById('imageInput').value=''; 
+document.getElementById('preview').hidden=true; 
+document.getElementById('scanResult').textContent='Your explanation will appear here.'; 
+} 
+// KNOWLEDGE DATABASE 
+const answers={ 
+"solar system":{ 
+English:`WHAT IS THE SOLAR SYSTEM? 
+The Solar System is a family of celestial objects consisting of the Sun and all the objects that revolve around it due to gravitational force. 
+PARTS OF THE SOLAR SYSTEM: 
+1. Sun: 
+The Sun is the central star of our Solar System. It provides heat and light. 
+2. Planets: 
+There are eight planets: 
+Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune. 
+3. Moons: 
+Natural satellites that revolve around planets. 
+4. Asteroids: 
+Small rocky objects that revolve around the Sun. 
+5. Comets: 
+Icy objects that develop glowing tails when they approach the Sun. 
+6. Dwarf Planets: 
+Small planetary bodies such as Pluto. 
+IMPORTANCE: 
+The Sun provides energy, and Earth receives the light and heat necessary for life.`, 
+Hindi:`सौर मंडल क्या है? 
+सौर मंडल सूर्य और उन सभी खगोलीय पिंडों का समूह है जो सूर्य के गुरुत्वाकर्षण बल के कारण उसके चारों ओर घूमते हैं। 
+सौर मंडल के मुख्य भाग: 
+1. सूर्य: 
+सूर्य हमारे सौर मंडल का केंद्रीय तारा है। यह प्रकाश और ऊष्मा प्रदान करता है। 
+2. ग्रह: 
+सौर मंडल में आठ ग्रह हैं: 
+बुध, शुक्र, पृथ्वी, मंगल, बृहस्पति, शनि, अरुण और वरुण। 
+3. उपग्रह: 
+ये वे प्राकृतिक पिंड हैं जो ग्रहों के चारों ओर घूमते हैं। 
+4. क्षुद्रग्रह: 
+ये छोटे चट्टानी पिंड हैं जो सूर्य की परिक्रमा करते हैं। 
+5. धूमकेतु: 
+ये बर्फ और धूल से बने पिंड होते हैं। 
+6. बौने ग्रह: 
+प्लूटो इसका एक उदाहरण है। 
+महत्त्व: 
+सूर्य हमें प्रकाश और ऊष्मा प्रदान करता है, जो पृथ्वी पर जीवन के लिए आवश्यक हैं।`, 
+Hinglish:`SOLAR SYSTEM KYA HAI? 
+Solar System Sun aur un sabhi celestial objects ka group hai jo Sun ki gravity ki wajah se uske around revolve karte hain. 
+SOLAR SYSTEM KE MAIN PARTS: 
+1. Sun: 
+Sun hamare Solar System ka central star hai. Ye light aur heat provide karta hai. 
+2. Planets: 
+Solar System mein 8 planets hain: 
+Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus aur Neptune. 
+3. Moons: 
+Ye natural satellites hote hain jo planets ke around revolve karte hain. 
+4. Asteroids: 
+Ye chhote rocky objects hote hain. 
+5. Comets: 
+Ye ice aur dust se bane objects hote hain. 
+6. Dwarf Planets: 
+Pluto iska example hai. 
+IMPORTANCE: 
+Sun humein energy, light aur heat deta hai jo Earth par life ke liye important hai.` 
+}, 
+"heart":{ 
+English:`HUMAN HEART: PARTS AND FUNCTIONS 
+The human heart is a muscular organ that pumps blood throughout the body. 
+MAIN PARTS: 
+1. Right Atrium: 
+Receives deoxygenated blood from the body. 
+2. Right Ventricle: 
+Pumps deoxygenated blood towards the lungs. 
+3. Left Atrium: 
+Receives oxygen-rich blood from the lungs. 
+4. Left Ventricle: 
+Pumps oxygen-rich blood to the entire body. 
+5. Valves: 
+Prevent the backward flow of blood. 
+6. Septum: 
+Separates the right and left sides of the heart. 
+7. Aorta: 
+The main artery that carries oxygen-rich blood from the left ventricle to the body. 
+FUNCTION: 
+The right side sends blood to the lungs for oxygenation. The left side receives oxygen-rich blood and pumps it throughout the body. 
+IMPORTANCE: 
+The heart maintains blood circulation and supplies oxygen and nutrients to body tissues.`, 
+Hindi:`मानव हृदय: भाग और कार्य 
+मानव हृदय एक पेशीय अंग है जो पूरे शरीर में रक्त पंप करता है। 
+मुख्य भाग: 
+1. दायाँ आलिंद: 
+शरीर से ऑक्सीजन रहित रक्त प्राप्त करता है। 
+2. दायाँ निलय: 
+रक्त को फेफड़ों की ओर भेजता है। 
+3. बायाँ आलिंद: 
+फेफड़ों से ऑक्सीजन युक्त रक्त प्राप्त करता है। 
+4. बायाँ निलय: 
+ऑक्सीजन युक्त रक्त को पूरे शरीर में भेजता है। 
+5. वाल्व: 
+रक्त को उल्टी दिशा में बहने से रोकते हैं। 
+6. सेप्टम: 
+हृदय के दाएँ और बाएँ भाग को अलग करता है। 
+7. महाधमनी: 
+यह बाएँ निलय से ऑक्सीजन युक्त रक्त को पूरे शरीर तक पहुँचाती है। 
+कार्य: 
+हृदय का दायाँ भाग रक्त को ऑक्सीजन प्राप्त करने के लिए फेफड़ों में भेजता है। बायाँ भाग ऑक्सीजन युक्त रक्त को पूरे शरीर में पंप करता है। 
+महत्त्व: 
+हृदय शरीर में रक्त का संचार बनाए रखता है।`, 
+Hinglish:`HUMAN HEART: PARTS AUR FUNCTIONS 
+Human heart ek muscular organ hai jo poori body mein blood pump karta hai. 
+MAIN PARTS: 
+1. Right Atrium: 
+Body se deoxygenated blood receive karta hai. 
+
+2. Right Ventricle: Blood ko lungs ki taraf pump karta hai.
+
+3. Left Atrium:
+Lungs se oxygen-rich blood receive karta hai.
+
+4. Left Ventricle:
+Oxygen-rich blood ko poori body mein pump karta hai.
+
+5. Valves:
+Blood ko reverse direction mein jaane se rokte hain.
+
+6. Septum:
+Heart ke right aur left sides ko separate karta hai.
+
+7. Aorta:
+Left ventricle se oxygen-rich blood ko body tak le iati hai.
+
+FUNCTION:
+Heart ka right side blood ko oxygen lene ke liye lungs mein bhejta hai. Left side oxygen-rich blood ko poori body mein pump karta hai.
+
+IMPORTANCE:
+
+Heart body mein blood circulation maintain karta hai aur cells ko oxygen aur nutrients provide karta hai.
+
+},
+
+"ecosystem":{
+
+English: WHAT IS AN ECOSYSTEM?
+
+An ecosystem is a community of living organisms interacting with each other and with their non-living environment.
+
+MAIN COMPONENTS:
+
+1. Biotic Components: These are the living components.
+
+Examples:
+Plants, animals, bacteria and fungi.
+
+2. Abiotic Components: These are the non-living components.
+
+Examples:
+Air, water, soil, sunlight and temperature.
+
+TYPES OF ECOSYSTEMS:
+
+1. Terrestrial Ecosystem: Forest, desert and grassland.
+2. Aquatic Ecosystem: Ponds, rivers, lakes and oceans.
+
+FUNCTIONS:
+
+1. Energy flows through food chains.
+
+2. Nutrients are recycled.
+
+3. Organisms depend on each other.
+
+4. Ecosystems maintain ecological balance.
+
+EXAMPLE:
+A pond ecosystem contains fish, aquatic plants, insects, water and microorganisms.,
+
+Hindi: पारिस्थितिकी तंत्र क्या है?
+पारिस्थितिकी तंत्र जीवों का ऐसा समुदाय है जिसमे ं सभी जीव एक-दूसरे और अपने निर्जीव वातावरण के साथ परस्पर क्रिया करते हैं।
+
+मुख्य घटक:
+
+1. जैविक घटकः ये सभी जीवित चीज ें होती हैं।
+
+उदाहरणः पौधे, जानवर, बैक्टीरिया और कवक ।
+
+2. अजैविक घटकः ये निर्जीव चीज ें होती हैं।
+
+उदाहरण:
+
+हवा, पानी, मिट्टी, सूर्य का प्रकाश और तापमान ।
+
+पारिस्थितिकी तंत्र के प्रकार:
+
+1. स्थलीय पारिस्थितिकी तंत्रः वन, रेगिगन और घास के मैदान ।
+
+2. जलीय पारिस्थितिकी तंत्रः तालाब, नदियाँ, झीलें और महासागर ।
+
+कार्य:
+
+1. खाद्य श्रृंखला के माध्यम से ऊर्जा का प्रवाह ।
+
+2. पोषक तत्वों का पुनर्चक्रण।
+
+3. जीवों के बीच परस्पर निर्भरता।
+
+4. पर्यावरण का संतुलन बनाए रखना।
+
+उदाहरणः तालाब मे ं मछलियाँ, जलीय पौधे, कीड़े, पानी और सूक्ष्मजीव होते हैं।
+
+Hinglish: ECOSYSTEM KYA HAI ?
+Ecosystem living organisms aur unke non-living environment ka ek system hai jisme sabhi ek dusre ke saath interact karte hain. 
+MAIN COMPONENTS: 
+1. Biotic Components: 
+Ye living things hoti hain. 
+Examples: 
+Plants, animals, bacteria aur fungi. 
+2. Abiotic Components: 
+Ye non-living things hoti hain. 
+Examples: 
+Air, water, soil, sunlight aur temperature. 
+TYPES: 
+1. Terrestrial Ecosystem: 
+Forest, desert aur grassland. 
+2. Aquatic Ecosystem: 
+Ponds, rivers, lakes aur oceans. 
+FUNCTIONS: 
+1. Food chain ke through energy flow hota hai. 
+2. Nutrients recycle hote hain. 
+3. Organisms ek dusre par depend karte hain. 
+4. Nature ka balance maintain hota hai. 
+EXAMPLE: 
+Ek pond ecosystem mein fish, aquatic plants, insects, water aur microorganisms hote hain.` 
+}, 
+"photosynthesis":{ 
+English:`WHAT IS PHOTOSYNTHESIS? 
+Photosynthesis is the process by which green plants prepare their food using sunlight, water and carbon dioxide. 
+REQUIREMENTS: 
+1. Sunlight 
+2. Water 
+3. Carbon dioxide 
+4. Chlorophyll 
+PROCESS: 
+Roots absorb water from the soil. Leaves absorb carbon dioxide from the air. Chlorophyll captures sunlight energy. 
+Plants use this energy to convert water and carbon dioxide into glucose. 
+Oxygen is released into the atmosphere. 
+IMPORTANCE: 
+Photosynthesis provides food and oxygen and helps maintain the balance of gases in the atmosphere.`, 
+Hindi:`प्रकाश संश्लेषण क्या है? 
+प्रकाश संश्लेषण वह प्रक्रिया है जिसमें हरे पौधे सूर्य के प्रकाश, पानी और कार्बन डाइऑक्साइड की सहायता से अपना भोजन बनाते हैं। 
+आवश्यकताएँ: 
+1. सूर्य का प्रकाश 
+2. पानी 
+3. कार्बन डाइऑक्साइड 
+4. क्लोरोफिल 
+प्रक्रिया: 
+जड़ें मिट्टी से पानी अवशोषित करती हैं। पत्तियाँ हवा से कार्बन डाइऑक्साइड लेती हैं। क्लोरोफिल सूर्य के प्रकाश को ग्रहण करता है। 
+इस ऊर्जा की सहायता से पौधे ग्लूकोज बनाते हैं और ऑक्सीजन छोड़ते हैं। 
+महत्त्व: 
+यह भोजन और ऑक्सीजन प्रदान करता है।`, 
+Hinglish:`PHOTOSYNTHESIS KYA HAI? 
+Photosynthesis ek process hai jisme green plants sunlight, water aur carbon dioxide ki help se apna food banate hain. 
+REQUIREMENTS: 
+1. Sunlight 
+2. Water 
+3. Carbon dioxide 
+4. Chlorophyll 
+PROCESS: 
+Roots soil se water absorb karti hain. Leaves air se carbon dioxide leti hain. Chlorophyll sunlight absorb karta hai. 
+Plants is energy ki help se glucose banate hain aur oxygen release karte hain. 
+IMPORTANCE: 
+Photosynthesis humein food aur oxygen provide karta hai.` 
+}, 
+"gravity":{ 
+English:`WHAT IS GRAVITY? 
+Gravity is the force of attraction between objects having mass. 
+Earth attracts objects towards its centre. 
+IMPORTANCE: 
+1. It keeps us on the ground. 
+2. It keeps planets in their orbits. 
+3. It keeps the Moon revolving around Earth. 
+4. It helps maintain the atmosphere around Earth.`, 
+Hindi:`गुरुत्वाकर्षण क्या है? 
+गुरुत्वाकर्षण द्रव्यमान वाली वस्तुओं के बीच लगने वाला आकर्षण बल है। 
+पृथ्वी सभी वस्तुओं को अपने केंद्र की ओर आकर्षित करती है। 
+महत्त्व: 
+1. यह हमें जमीन पर बनाए रखता है। 
+2. यह ग्रहों को उनकी कक्षाओं में रखता है। 
+3. यह चंद्रमा को पृथ्वी के चारों ओर घूमने में सहायता करता है। 
+4. यह पृथ्वी के वायुमंडल को बनाए रखने में मदद करता है।`, 
+Hinglish:`GRAVITY KYA HAI? 
+Gravity ek attractive force hai jo mass wali objects ke beech lagti hai. 
+Earth sabhi objects ko apne centre ki taraf attract karti hai. 
+IMPORTANCE: 
+1. Humein ground par rakhti hai. 
+2. Planets ko unki orbit mein rakhti hai. 
+3. Moon ko Earth ke around revolve karne mein help karti hai. 
+4. Earth ke atmosphere ko maintain karne mein help karti hai.` 
+}, 
+"atom":{ 
+English:`WHAT IS AN ATOM? 
+An atom is the smallest unit of an element that retains its chemical properties. 
+MAIN PARTS: 
+1. Protons: Positively charged particles. 
+2. Neutrons: Particles with no electric charge. 
+3. Electrons: Negatively charged particles. 
+The nucleus contains protons and neutrons. Electrons occupy regions around the nucleus.`, 
+Hindi:`परमाणु क्या है? 
+परमाणु किसी तत्व की सबसे छोटी इकाई है जो उसके रासायनिक गुणों को बनाए रखती है। 
+मुख्य भाग: 
+1. प्रोटॉन: धनात्मक आवेश वाले कण। 
+2. न्यूट्रॉन: बिना आवेश वाले कण। 
+3. इलेक्ट्रॉन: ऋणात्मक आवेश वाले कण। 
+प्रोटॉन और न्यूट्रॉन नाभिक में होते हैं। इलेक्ट्रॉन नाभिक के आसपास पाए जाते हैं।`, 
+Hinglish:`ATOM KYA HAI? 
+Atom kisi element ki smallest unit hoti hai jo uske chemical properties ko maintain karti hai. 
+MAIN PARTS: 
+1. Proton: Positive charge. 
+2. Neutron: No charge. 
+3. Electron: Negative charge. 
+Protons aur neutrons nucleus mein hote hain aur electrons nucleus ke around hote hain.` 
+}, 
+"force":{ 
+English:`WHAT IS FORCE? 
+Force is a push or pull acting on an object. 
+EFFECTS OF FORCE: 
+1. It can change the speed of an object. 
+2. It can change its direction. 
+3. It can change its shape. 
+4. It can start or stop motion. 
+SI UNIT: 
+The SI unit of force is Newton (N).`, 
+Hindi:`बल क्या है? 
+बल किसी वस्तु पर लगाया गया धक्का या खिंचाव है। 
+बल के प्रभाव: 
+1. यह वस्तु की गति बदल सकता है। 
+2. यह दिशा बदल सकता है। 
+3. यह आकार बदल सकता है। 
+4. यह वस्तु को गति देना या रोकना संभव बनाता है। 
+SI मात्रक: 
+न्यूटन (N)।`, 
+Hinglish:`FORCE KYA HAI? 
+Force ek push ya pull hai jo kisi object par act karta hai. 
+EFFECTS: 
+1. Speed change kar sakta hai. 
+2. Direction change kar sakta hai. 
+3. Shape change kar sakta hai. 
+4. Motion start ya stop kar sakta hai. 
+SI UNIT: 
+Newton (N).` 
+} 
+}; 
+// CHAT SYSTEM 
+function addBubble(text,type){ 
+let b=document.createElement('div'); 
+b.className='bubble '+type; 
+b.textContent=text; 
+let box=document.getElementById('chatbox'); 
+box.appendChild(b); 
+box.scrollTop=box.scrollHeight; 
+} 
+function sendQuestion(){ 
+let input=document.getElementById('question'); 
+let original=input.value.trim(); 
+if(!original)return; 
+addBubble(original,'user'); 
+input.value=''; 
+let q=original.toLowerCase(); 
+let lang=document.getElementById('chatLanguage').value; 
+let match=Object.keys(answers).find(k=>q.includes(k)); 
+let response; 
+if(match){ 
+ response=answers[match][lang]; 
+}else{ 
+ response=lang==='Hindi' 
+ ?'क्षमा करें, इस प्रश्न का उत्तर अभी मेरे डेमो डेटाबेस में उपलब्ध नहीं है। कृपया Solar System, Heart, Ecosystem, Photosynthesis, Gravity, Atom या Force के बारे में पूछें।' 
+ :lang==='Hinglish' 
+ ?'Sorry! Is question ka answer abhi mere demo database mein available nahi hai. Solar System, Heart, Ecosystem, Photosynthesis, Gravity, Atom ya Force ke baare mein pooch sakte ho.' 
+ :'Sorry! This question is not available in my demonstration database yet. Try asking about Solar System, Heart, Ecosystem, Photosynthesis, Gravity, Atom or Force.'; 
+} 
+setTimeout(()=>{ 
+ addBubble(response,'bot'); 
+ if(document.getElementById('audioPref').checked){ 
+ speak(response); 
+ } 
+},300); 
+} 
+// ENTER TO SEND 
+document.getElementById('question').addEventListener('keydown',e=>{ 
+if(e.key==='Enter')sendQuestion(); 
+}); 
+// VOICE INPUT SYSTEM 
+let recognition=null; 
+let listening=false; 
+function setRecognitionLanguage(){ 
+if(recognition){ 
+ recognition.lang=getVoiceLanguage(); 
+} 
+} 
+function getVoiceLanguage(){ 
+let lang=document.getElementById('chatLanguage').value; 
+if(lang==='Hindi')return 'hi-IN'; 
+if(lang==='Hinglish')return 'hi-IN'; 
+return 'en-IN'; 
+} 
+function voiceInput(){ 
+const SpeechRecognition= 
+window.SpeechRecognition || 
+window.webkitSpeechRecognition; 
+if(!SpeechRecognition){ 
+ alert('Voice recognition is not supported in this browser. Please open DRISHTI AI in Google Chrome.'); 
+ return; 
+} 
+if(listening){ 
+ if(recognition)recognition.stop(); 
+ return; 
+} 
+recognition=new SpeechRecognition(); 
+recognition.lang=getVoiceLanguage(); 
+recognition.continuous=false; 
+recognition.interimResults=true; 
+recognition.maxAlternatives=1; 
+let micBtn=document.getElementById('micBtn'); 
+let status=document.getElementById('micStatus'); 
+let finalTranscript=''; 
+recognition.onstart=()=>{ 
+ listening=true; 
+ micBtn.textContent='⏹ Stop'; 
+ status.textContent='🔴 Listening... Speak your question now.'; 
+}; 
+recognition.onresult=(event)=>{ 
+ let transcript=''; 
+ for(let i=0;i<event.results.length;i++){ 
+ transcript+=event.results[i][0].transcript; 
+ } 
+ document.getElementById('question').value=transcript; 
+ if(event.results[event.results.length-1].isFinal){ 
+ finalTranscript=transcript; 
+ } 
+}; 
+recognition.onerror=(event)=>{ 
+ status.textContent='Microphone error: '+event.error; 
+ if(event.error==='not-allowed'){ 
+ alert('Please allow microphone permission in your browser settings.'); 
+ } 
+}; 
+recognition.onend=()=>{ 
+ listening=false; 
+ micBtn.textContent='🎙 Mic'; 
+ if(finalTranscript.trim()){ 
+ document.getElementById('question').value=finalTranscript.trim(); 
+ status.textContent='Question recognised! Processing...'; 
+ sendQuestion(); 
+ }else{ 
+ status.textContent='Microphone ready. Tap Mic to try again.'; 
+ } 
+}; 
+try{ 
+ recognition.start(); 
+}catch(error){ 
+ listening=false; 
+ micBtn.textContent='🎙 Mic'; 
+ status.textContent='Could not start microphone. Please try again.'; 
+} 
+} 
+// QUIZ 
+const questions=[ 
+{ 
+ q:'Which gas do plants absorb during photosynthesis?', 
+ options:['Oxygen','Carbon Dioxide','Nitrogen','Hydrogen'], 
+ answer:1 
+}, 
+{ 
+ q:'How many planets are in our Solar System?', 
+ options:['7','8','9','10'], 
+ answer:1 
+}, 
+{ 
+ q:'Which organ pumps blood throughout the body?', 
+ options:['Brain','Lungs','Heart','Kidney'], 
+ answer:2 
+}, 
+{ 
+ q:'What is the SI unit of force?', 
+ options:['Joule','Newton','Watt','Pascal'], 
+ answer:1 
+}, 
+{ 
+ q:'Which of these is an abiotic component?', 
+ options:['Plants','Animals','Water','Bacteria'], 
+ answer:2 
+} 
+]; 
+let currentQuestion=0; 
+let score=0; 
+let answered=false; 
+function loadQuestion(){ 
+let q=questions[currentQuestion]; 
+document.getElementById('qNumber').textContent= 
+'Question '+(currentQuestion+1)+' of '+questions.length; 
+document.getElementById('quizQuestion').textContent=q.q; 
+document.getElementById('feedback').textContent='Choose your answer.'; 
+document.getElementById('nextButton').disabled=true; 
+answered=false; 
+let choices=document.getElementById('choices'); 
+choices.innerHTML=''; 
+q.options.forEach((option,index)=>{ 
+ let button=document.createElement('button'); 
+ button.className='choice'; 
+ button.textContent=option; 
+ button.onclick=()=>checkAnswer(index); 
+ choices.appendChild(button); 
+}); 
+} 
+function checkAnswer(index){ 
+if(answered)return; 
+answered=true; 
+let q=questions[currentQuestion]; 
+let buttons=document.querySelectorAll('.choice'); 
+buttons[index].classList.add( 
+ index===q.answer?'correct':'wrong' 
+); 
+buttons[q.answer].classList.add('correct'); 
+if(index===q.answer){ 
+ score++; 
+ document.getElementById('feedback').textContent='Correct! Excellent work.'; 
+}else{ 
+ document.getElementById('feedback').textContent= 
+ 'Incorrect. Correct answer: '+q.options[q.answer]; 
+} 
+document.getElementById('score').textContent='Score: '+score; 
+document.getElementById('nextButton').disabled=false; 
+} 
+function nextQuestion(){ 
+if(!answered)return; 
+currentQuestion++; 
+if(currentQuestion>=questions.length){ 
+ document.getElementById('quizQuestion').textContent= 
+ 'Quiz Completed!'; 
+ document.getElementById('choices').innerHTML=''; 
+ document.getElementById('feedback').textContent= 
+ 'Your final score is '+score+' out of '+questions.length+'.'; 
+ document.getElementById('qNumber').textContent='Completed'; 
+ document.getElementById('nextButton').disabled=true; 
+ return; 
+} 
+loadQuestion(); 
+} 
+function restartQuiz(){ 
+currentQuestion=0; 
+score=0; 
+document.getElementById('score').textContent='Score: 0'; 
+loadQuestion(); 
+} 
+// TACTILE DESIGN 
+function makeTactile(){ 
+let name=document.getElementById('diagramName').value.trim(); 
+let notes=document.getElementById('diagramNotes').value.trim(); 
+if(!name){ 
+ alert('Please enter a diagram topic.'); 
+ return; 
+} 
+if(!notes){ 
+ alert('Please enter important parts.'); 
+ return; 
+} 
+let result= 
+`DRISHTI AI - TACTILE DESIGN PLAN 
+TOPIC: ${name} 
+IMPORTANT PARTS: 
+${notes} 
+DESIGN RECOMMENDATIONS: 
+1. Use a simple and uncluttered layout. 
+2. Represent major structures using raised lines. 
+3. Use different tactile textures for different components. 
+4. Provide Braille labels where possible. 
+5. Maintain sufficient spacing between labels. 
+6. Use a clear legend to explain tactile symbols. 
+7. Test the final design with blind or low-vision learners. 
+PROJECT STATUS: 
+Design concept generated successfully. 
+NOTE: 
+This is a design plan and not a physically produced tactile diagram.`; 
+document.getElementById('tactileResult').textContent=result; 
+} 
+// SETTINGS 
+function saveSettings(){ 
+let name=document.getElementById('userName').value; 
+let size=document.getElementById('textSize').value; 
+let contrast=document.getElementById('contrast').checked; 
+let language=document.getElementById('language').value; 
+document.body.style.fontSize=size+'px'; 
+document.body.classList.toggle('high-contrast',contrast); 
+localStorage.setItem('drishtiName',name); 
+localStorage.setItem('drishtiSize',size); 
+localStorage.setItem('drishtiContrast',contrast); 
+localStorage.setItem('drishtiLanguage',language); 
+localStorage.setItem( 
+ 'drishtiAudio', 
+ document.getElementById('audioPref').checked 
+); 
+document.getElementById('settingsResult').textContent= 
+'Preferences saved successfully! Welcome '+(name||'Learner')+'.'; 
+} 
+// RESTORE SETTINGS 
+window.addEventListener('load',()=>{ 
+let name=localStorage.getItem('drishtiName'); 
+let size=localStorage.getItem('drishtiSize'); 
+let contrast=localStorage.getItem('drishtiContrast'); 
+let language=localStorage.getItem('drishtiLanguage'); 
+let audio=localStorage.getItem('drishtiAudio'); 
+if(name)document.getElementById('userName').value=name; 
+if(size){ 
+ document.getElementById('textSize').value=size; 
+ document.body.style.fontSize=size+'px'; 
+} 
+if(contrast==='true'){ 
+ document.getElementById('contrast').checked=true; 
+ document.body.classList.add('high-contrast'); 
+} 
+if(language){ 
+ document.getElementById('language').value=language; 
+} 
+if(audio!==null){ 
+ document.getElementById('audioPref').checked=audio==='true'; 
+} 
+loadQuestion(); 
+}); 
+</script> 
+</body> 
+</html>
