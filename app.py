@@ -8,6 +8,7 @@ from PIL import Image
 app = Flask(__name__)
 CORS(app)
 
+# Initialize client (it automatically picks up GEMINI_API_KEY from environment variables)
 client = genai.Client()
 
 SYSTEM_PROMPT = (
@@ -20,7 +21,6 @@ SYSTEM_PROMPT = (
     "4. Support for cross-questioning in English, Hindi, or Hinglish."
 )
 
-# 1. ADD THIS HOME ROUTE SO RENDER FINDS index.html
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -40,7 +40,10 @@ def chat():
         response = client.models.generate_content(
             model='gemini-1.5-flash',
             contents=prompt,
-            config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.7)
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM_PROMPT, 
+                temperature=0.7
+            )
         )
         return jsonify({"success": True, "answer": response.text})
     except Exception as e:
@@ -60,7 +63,10 @@ def scan_image():
         response = client.models.generate_content(
             model='gemini-1.5-flash',
             contents=[img, prompt],
-            config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.4)
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM_PROMPT, 
+                temperature=0.4
+            )
         )
         if os.path.exists(image_path):
             os.remove(image_path)
