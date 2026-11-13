@@ -1,10 +1,26 @@
 import os
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
+import google.generativeai as genai
 from PIL import Image
 
 app = Flask(__name__)
 CORS(app)
+
+# Configure API Key
+api_key = os.environ.get("GEMINI_API_KEY")
+if api_key:
+    genai.configure(api_key=api_key)
+
+SYSTEM_PROMPT = (
+    "You are DRISHTI AI, an advanced AI accessibility companion designed specifically "
+    "to empower blind and low-vision students in learning science, biology, geometry, and academic diagrams. "
+    "When explaining images or diagrams, provide: "
+    "1. Overview, "
+    "2. Precise spatial layout and placement of every component, "
+    "3. Functions and details of each part, "
+    "4. Support for cross-questioning in English, Hindi, or Hinglish."
+)
 
 @app.route('/')
 def home():
@@ -18,32 +34,41 @@ def health():
 def chat():
     try:
         data = request.get_json()
-        question = data.get('question', '').lower()
+        question = data.get('question', '')
+        language = data.get('language', 'English')
         
-        # Presentation ke liye smart fallback answer jo hamesha chalega
-        answer = (
-            "DRISHTI AI Accessibility Companion:\n"
-            "1. Overview: Designed specifically to empower blind and low-vision students in learning science and diagrams.\n"
-            "2. Spatial Layout: Components are mapped with precise directional placement (Top, Center, Bottom) for mental visualization.\n"
-            "3. Function: Translates complex visual academic concepts into accessible text and audio formats.\n"
-            f"Received your query: '{question}'. AI backend is successfully connected and processing!"
-        )
-        return jsonify({"success": True, "answer": answer})
+        prompt = f"User Language: {language}.\nSystem Role: {SYSTEM_PROMPT}\nQuestion: {question}\nAnswer clearly."
+        
+        # Real AI call using gemini-1.5-flash
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(prompt)
+        
+        return jsonify({"success": True, "answer": response.text})
     except Exception as e:
-        return jsonify({"success": True, "answer": "DRISHTI AI is active and ready for your science queries!"})
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/api/scan', methods=['POST'])
 def scan_image():
     try:
-        explanation = (
-            "TACTILE DIAGRAM ANALYSIS (DRISHTI AI):\n"
-            "1. Overview: The uploaded diagram has been successfully scanned for inclusive learning.\n"
-            "2. Spatial Layout: Top section features primary structures, center shows core functional units, and bottom contains supporting bases.\n"
-            "3. Functions: Each component is structured for clear screen-reader and audio accessibility."
-        )
-        return jsonify({"success": True, "explanation": explanation})
+        if 'image' not in request.files:
+            return jsonify({"success": False, "error": "No image provided."}), 400
+        
+        image_file = request.files['image']
+        image_path = "temp.png"
+        image_file.save(image_path)
+        img = Image.open(image_path)
+        
+        prompt = f"System Role: {SYSTEM_PROMPT}\nAnalyze this diagram for a blind student. Provide: 1. Summary, 2. Precise spatial placement of every part, 3. Functions of each part."
+        
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content([prompt, img])
+        
+        if os.path.exists(image_path):
+            os.remove(image_path)
+            
+        return jsonify({"success": True, "explanation": response.text})
     except Exception as e:
-        return jsonify({"success": True, "explanation": "Diagram scanned successfully."})
+        return jsonify({"success": False, "error": str(e)}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
