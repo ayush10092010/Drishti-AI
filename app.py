@@ -7,7 +7,6 @@ from PIL import Image
 app = Flask(__name__)
 CORS(app)
 
-# Configure Gemini API key
 api_key = os.environ.get("GEMINI_API_KEY")
 if api_key:
     genai.configure(api_key=api_key)
@@ -38,7 +37,8 @@ def chat():
         language = data.get('language', 'English')
         prompt = f"User Language: {language}.\nSystem Role: {SYSTEM_PROMPT}\nQuestion: {question}\nAnswer clearly."
         
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        # Using gemini-pro which is 100% stable on classic SDK
+        model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(prompt)
         return jsonify({"success": True, "answer": response.text})
     except Exception as e:
@@ -56,7 +56,7 @@ def scan_image():
         
         prompt = f"System Role: {SYSTEM_PROMPT}\nAnalyze this diagram for a blind student. Provide: 1. Summary, 2. Precise spatial placement of every part, 3. Functions of each part."
         
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-pro-vision')
         response = model.generate_content([prompt, img])
         
         if os.path.exists(image_path):
