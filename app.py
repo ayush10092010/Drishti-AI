@@ -1,22 +1,23 @@
 import os
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 from PIL import Image
 
 app = Flask(__name__)
 CORS(app)
 
-# Initialize client (it automatically picks up GEMINI_API_KEY from environment variables)
-client = genai.Client()
+# Configure Gemini API key
+api_key = os.environ.get("GEMINI_API_KEY")
+if api_key:
+    genai.configure(api_key=api_key)
 
 SYSTEM_PROMPT = (
     "You are DRISHTI AI, an advanced AI accessibility companion designed specifically "
     "to empower blind and low-vision students in learning science, biology, geometry, and academic diagrams. "
     "When explaining images or diagrams, provide: "
     "1. Overview, "
-    "2. Precise spatial layout and placement of every component (top-left, center, bottom base) for mental mapping, "
+    "2. Precise spatial layout and placement of every component, "
     "3. Functions and details of each part, "
     "4. Support for cross-questioning in English, Hindi, or Hinglish."
 )
@@ -35,16 +36,10 @@ def chat():
         data = request.get_json()
         question = data.get('question', '')
         language = data.get('language', 'English')
-        prompt = f"User Language: {language}.\nQuestion: {question}\nAnswer clearly and support cross-questioning."
+        prompt = f"User Language: {language}.\nSystem Role: {SYSTEM_PROMPT}\nQuestion: {question}\nAnswer clearly."
         
-        response = client.models.generate_content(
-            model='gemini-1.5-flash',
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                system_instruction=SYSTEM_PROMPT, 
-                temperature=0.7
-            )
-        )
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(prompt)
         return jsonify({"success": True, "answer": response.text})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
@@ -59,15 +54,11 @@ def scan_image():
         image_file.save(image_path)
         img = Image.open(image_path)
         
-        prompt = "Analyze this diagram for a blind student. Provide: 1. Summary, 2. Precise spatial placement of every part (top, bottom, left, right, center), 3. Functions of each part."
-        response = client.models.generate_content(
-            model='gemini-1.5-flash',
-            contents=[img, prompt],
-            config=types.GenerateContentConfig(
-                system_instruction=SYSTEM_PROMPT, 
-                temperature=0.4
-            )
-        )
+        prompt = f"System Role: {SYSTEM_PROMPT}\nAnalyze this diagram for a blind student. Provide: 1. Summary, 2. Precise spatial placement of every part, 3. Functions of each part."
+        
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content([prompt, img])
+        
         if os.path.exists(image_path):
             os.remove(image_path)
         return jsonify({"success": True, "explanation": response.text})
