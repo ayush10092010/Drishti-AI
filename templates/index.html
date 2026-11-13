@@ -301,7 +301,7 @@ body.high-contrast p{color:#222}
 <main class="main"> 
 <header class="topbar"> 
 <div class="eyebrow">ACCESSIBLE LEARNING COMPANION</div> 
-<div>● <span style="color:#947052">Prototype Mode</span></div> 
+<div>● <span style="color:#947052">Gemini AI Live Mode</span></div> 
 </header> 
 
 <!-- HOME --> 
@@ -309,7 +309,7 @@ body.high-contrast p{color:#222}
 <div class="hero"> 
 <span class="tag">AI • ACCESSIBILITY • EDUCATION</span>
 <h1>When Eyes Cannot See,<br><span>Knowledge</span> Should Still Be Within Reach.</h1> 
-<p>Welcome Champ! Welcome to DRISHTI AI. Your learning journey starts here.</p> 
+<p>Welcome Champ! Welcome to DRISHTI AI powered by Gemini.</p> 
 <button class="btn" onclick="showPage('scan')">📷 Scan a Diagram</button>
 <button class="btn secondary" onclick="showPage('ask')">✧ Ask DRISHTI AI</button>
 <button class="btn gold" onclick="speak('Welcome Champ! Welcome to DRISHTI AI.')">🔊 Hear Welcome</button>
@@ -319,12 +319,12 @@ body.high-contrast p{color:#222}
 <div class="card" onclick="showPage('scan')"> 
 <div class="icon">📷</div> 
 <h3>Scan & Explain</h3> 
-<p>Upload textbook diagrams and explore explanations.</p> 
+<p>Upload textbook diagrams for real-time Gemini AI explanations.</p> 
 </div> 
 <div class="card" onclick="showPage('ask')"> 
 <div class="icon">💬</div> 
 <h3>Ask AI</h3> 
-<p>Ask questions using text or voice.</p> 
+<p>Ask any science question using text or voice.</p> 
 </div> 
 <div class="card" onclick="showPage('quiz')"> 
 <div class="icon">🧠</div> 
@@ -347,21 +347,21 @@ body.high-contrast p{color:#222}
 <p>Choose your language and preferences.</p> 
 </div> 
 </div> 
-<div class="note">Made by Team DRISHTI AI. This is an educational prototype with demonstration answers.</div> 
+<div class="note">Powered by Google Gemini AI backend.</div> 
 </section> 
 
 <!-- SCAN --> 
 <section class="page" id="scan"> 
 <div class="eyebrow">VISUAL LEARNING</div> 
 <h1>Scan & Explain</h1> 
-<p>Upload a textbook diagram to preview it.</p> 
+<p>Upload a textbook diagram for Gemini AI to analyze.</p> 
 <div class="panel"> 
 <label>Choose a diagram image</label>
 <input type="file" id="imageInput" accept="image/*"> 
 <img id="preview" class="preview" hidden alt="Uploaded diagram"> 
-<button class="btn" onclick="explainImage()">Explain Diagram</button>
+<button class="btn" onclick="explainImage()">Explain with Gemini AI</button>
 <button class="btn secondary" onclick="clearImage()">Clear</button> 
-<div class="result" id="scanResult">Your explanation will appear here.</div> 
+<div class="result" id="scanResult">Your AI explanation will appear here.</div> 
 </div> 
 </section> 
 
@@ -369,16 +369,16 @@ body.high-contrast p{color:#222}
 <section class="page" id="ask"> 
 <div class="eyebrow">YOUR LEARNING ASSISTANT</div> 
 <h1>Ask DRISHTI AI</h1> 
-<p>Ask science questions in English, Hindi or Hinglish.</p> 
+<p>Ask any science question in English, Hindi or Hinglish.</p> 
 <div class="panel"> 
 <label>Response Language</label>
-<select id="chatLanguage" onchange="setRecognitionLanguage()"> 
+<select id="chatLanguage"> 
 <option value="English">English</option> 
 <option value="Hindi">Hindi</option> 
 <option value="Hinglish">Hinglish</option> 
 </select> 
 <div class="chatbox" id="chatbox" aria-live="polite"> 
-<div class="bubble bot">Welcome Champ! I am DRISHTI AI. You can ask me about Solar System, Heart, Ecosystem, Photosynthesis, Gravity, Atom or Force.</div> 
+<div class="bubble bot">Welcome Champ! I am DRISHTI AI powered by Gemini. Ask me any science question!</div> 
 </div> 
 <div class="chatrow"> 
 <input id="question" placeholder="Type your question..."> 
@@ -450,6 +450,7 @@ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active')
 if(btn)btn.classList.add('active'); 
 window.scrollTo(0,0); 
 } 
+
 function speak(text){ 
 if(!('speechSynthesis' in window))return; 
 speechSynthesis.cancel(); 
@@ -458,15 +459,8 @@ let utterance=new SpeechSynthesisUtterance(text);
 utterance.lang=lang==='Hindi'?'hi-IN':'en-IN'; 
 speechSynthesis.speak(utterance); 
 } 
-const answers={ 
-"solar system":{English:`Solar System consists of the Sun and planets.`, Hindi:`सौर मंडल सूर्य और ग्रहों का समूह है।`, Hinglish:`Solar System Sun aur planets ka group hai.`}, 
-"heart":{English:`Human heart pumps blood.`, Hindi:`मानव हृदय रक्त पंप करता है।`, Hinglish:`Human heart blood pump karta hai.`}, 
-"ecosystem":{English:`Ecosystem is a community of living organisms.`, Hindi:`पारिस्थितिकी तंत्र जीवों का समुदाय है।`, Hinglish:`Ecosystem living organisms ka community hai.`}, 
-"photosynthesis":{English:`Plants make food using sunlight.`, Hindi:`पौधे सूर्य के प्रकाश से भोजन बनाते हैं।`, Hinglish:`Plants sunlight se food banate hain.`}, 
-"gravity":{English:`Gravity is the force of attraction.`, Hindi:`गुरुत्वाकर्षण आकर्षण बल है।`, Hinglish:`Gravity attractive force hai.`}, 
-"atom":{English:`Atom is the smallest unit of matter.`, Hindi:`परमाणु पदार्थ की सबसे छोटी इकाई है।`, Hinglish:`Atom smallest unit hai.`}, 
-"force":{English:`Force is a push or pull.`, Hindi:`बल धक्का या खिंचाव है।`, Hinglish:`Force push ya pull hai.`} 
-}; 
+
+// CONNECT TO GEMINI BACKEND (/api/chat)
 function addBubble(text,type){ 
 let b=document.createElement('div'); 
 b.className='bubble '+type; 
@@ -475,20 +469,154 @@ let box=document.getElementById('chatbox');
 box.appendChild(b); 
 box.scrollTop=box.scrollHeight; 
 } 
+
 function sendQuestion(){ 
 let input=document.getElementById('question'); 
 let original=input.value.trim(); 
 if(!original)return; 
 addBubble(original,'user'); 
 input.value=''; 
-let q=original.toLowerCase(); 
 let lang=document.getElementById('chatLanguage').value; 
-let match=Object.keys(answers).find(k=>q.includes(k)); 
-let response=match?answers[match][lang]:"Sorry! Try asking about Solar System, Heart, Ecosystem, Photosynthesis, Gravity, Atom or Force."; 
-setTimeout(()=>addBubble(response,'bot'),300); 
+
+fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question: original, language: lang })
+})
+.then(res => res.json())
+.then(data => {
+    let response = data.success ? data.answer : (data.error || 'Error from Gemini AI.');
+    addBubble(response, 'bot');
+    if(document.getElementById('audioPref')?.checked || true){ 
+        speak(response); 
+    }
+})
+.catch(err => {
+    addBubble('Error connecting to backend server.', 'bot');
+});
 } 
+
 document.getElementById('question').addEventListener('keydown',e=>{if(e.key==='Enter')sendQuestion();}); 
+
+// CONNECT TO GEMINI BACKEND (/api/scan)
+document.getElementById('imageInput').addEventListener('change',function(){ 
+let file=this.files[0]; 
+if(!file)return; 
+let preview=document.getElementById('preview'); 
+preview.src=URL.createObjectURL(file); 
+preview.hidden=false; 
+}); 
+
+function explainImage(){ 
+let file=document.getElementById('imageInput').files[0]; 
+if(!file){ 
+ alert('Please upload a diagram first.'); 
+ return; 
+} 
+document.getElementById('scanResult').textContent = 'Analyzing diagram with Gemini AI... Please wait...';
+
+let formData = new FormData();
+formData.append('image', file);
+
+fetch('/api/scan', {
+    method: 'POST',
+    body: formData
+})
+.then(res => res.json())
+.then(data => {
+    let resultText = data.success ? data.explanation : (data.error || 'Error analyzing image.');
+    document.getElementById('scanResult').textContent = resultText;
+    speak(resultText);
+})
+.catch(err => {
+    document.getElementById('scanResult').textContent = 'Error connecting to backend server.';
+});
+} 
+
+function clearImage(){ 
+document.getElementById('imageInput').value=''; 
+document.getElementById('preview').hidden=true; 
+document.getElementById('scanResult').textContent='Your AI explanation will appear here.'; 
+}
+
+// VOICE INPUT
+let recognition=null; 
+function voiceInput(){ 
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; 
+if(!SpeechRecognition){ alert('Voice recognition not supported in this browser.'); return; } 
+recognition = new SpeechRecognition(); 
+recognition.lang = 'hi-IN'; 
+recognition.onresult = (event) => { 
+    document.getElementById('question').value = event.results[0][0].transcript; 
+    sendQuestion(); 
+}; 
+recognition.start(); 
+}
+
+// QUIZ & SETTINGS
+const questions=[ 
+{ q:'Which gas do plants absorb during photosynthesis?', options:['Oxygen','Carbon Dioxide','Nitrogen','Hydrogen'], answer:1 }, 
+{ q:'How many planets are in our Solar System?', options:['7','8','9','10'], answer:1 }, 
+{ q:'Which organ pumps blood throughout the body?', options:['Brain','Lungs','Heart','Kidney'], answer:2 }, 
+{ q:'What is the SI unit of force?', options:['Joule','Newton','Watt','Pascal'], answer:1 }, 
+{ q:'Which of these is an abiotic component?', options:['Plants','Animals','Water','Bacteria'], answer:2 } 
+]; 
+let currentQuestion=0; let score=0; let answered=false; 
+function loadQuestion(){ 
+let q=questions[currentQuestion]; 
+document.getElementById('qNumber').textContent='Question '+(currentQuestion+1)+' of '+questions.length; 
+document.getElementById('quizQuestion').textContent=q.q; 
+document.getElementById('feedback').textContent='Choose your answer.'; 
+document.getElementById('nextButton').disabled=true; 
+answered=false; 
+let choices=document.getElementById('choices'); 
+choices.innerHTML=''; 
+q.options.forEach((option,index)=>{ 
+ let button=document.createElement('button'); 
+ button.className='choice'; 
+ button.textContent=option; 
+ button.onclick=()=>checkAnswer(index); 
+ choices.appendChild(button); 
+}); 
+} 
+function checkAnswer(index){ 
+if(answered)return; 
+answered=true; 
+let q=questions[currentQuestion]; 
+let buttons=document.querySelectorAll('.choice'); 
+buttons[index].classList.add(index===q.answer?'correct':'wrong'); 
+buttons[q.answer].classList.add('correct'); 
+if(index===q.answer){ score++; document.getElementById('feedback').textContent='Correct!'; } 
+else{ document.getElementById('feedback').textContent='Incorrect.'; } 
+document.getElementById('score').textContent='Score: '+score; 
+document.getElementById('nextButton').disabled=false; 
+} 
+function nextQuestion(){ 
+currentQuestion++; 
+if(currentQuestion>=questions.length){ 
+ document.getElementById('quizQuestion').textContent='Quiz Completed!'; 
+ document.getElementById('choices').innerHTML=''; 
+ document.getElementById('feedback').textContent='Final score: '+score+' out of '+questions.length; 
+ document.getElementById('nextButton').disabled=true; 
+ return; 
+} 
+loadQuestion(); 
+} 
+function restartQuiz(){ currentQuestion=0; score=0; loadQuestion(); } 
+
+function makeTactile(){
+let name=document.getElementById('diagramName').value.trim();
+let notes=document.getElementById('diagramNotes').value.trim();
+if(!name || !notes){ alert('Please fill in both fields.'); return; }
+document.getElementById('tactileResult').textContent=`TACTILE DESIGN PLAN FOR: ${name}\nParts: ${notes}\n1. Use clear raised lines.\n2. Add Braille labels.`;
+}
+
+function saveSettings(){ 
+let name=document.getElementById('userName').value; 
+document.getElementById('settingsResult').textContent='Preferences saved successfully! Welcome '+(name||'Learner')+'.'; 
+} 
+
+window.addEventListener('load',()=>{ loadQuestion(); }); 
 </script> 
 </body> 
 </html>
-
