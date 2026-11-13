@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from google import genai
 from google.genai import types
@@ -63,7 +63,10 @@ def scan_image():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-if __name__ == '__main__':
+@app.route('/')
+def home():
+    return render_template('Ai-1.html')
+    
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
     
