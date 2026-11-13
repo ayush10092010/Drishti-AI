@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from google import genai
 from google.genai import types
@@ -31,15 +31,15 @@ def chat():
         question = data.get('question', '')
         language = data.get('language', 'English')
         prompt = f"User Language: {language}.\nQuestion: {question}\nAnswer clearly and support cross-questioning."
-
+        
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-1.5-flash',
             contents=prompt,
             config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.7)
         )
         return jsonify({"success": True, "answer": response.text})
     except Exception as e:
-        return jsonify({"success": True if False else False, "error": str(e)}), 500
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/api/scan', methods=['POST'])
 def scan_image():
@@ -50,10 +50,10 @@ def scan_image():
         image_path = "temp.png"
         image_file.save(image_path)
         img = Image.open(image_path)
-
-        prompt = "Analyze this diagram for a blind student. Provide: 1. Summary, 2. Precise spatial placement of every response = client.models.generate_content("
+        
+        prompt = "Analyze this diagram for a blind student. Provide: 1. Summary, 2. Precise spatial placement of every part (top, bottom, left, right, center), 3. Functions of each part."
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-1.5-flash',
             contents=[img, prompt],
             config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.4)
         )
@@ -62,10 +62,6 @@ def scan_image():
         return jsonify({"success": True, "explanation": response.text})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
-
-@app.route('/')
-def home():
-    return render_template('index.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
